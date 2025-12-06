@@ -39,12 +39,15 @@ body {
     top: 0;
     z-index: 1000;
     border-bottom: 4px solid var(--primary-red);
+    flex-wrap: wrap;
+    gap: 1rem;
 }
 
 .navbar .logo {
     display: flex;
     align-items: center;
     gap: 1rem;
+    flex-shrink: 0;
 }
 
 .navbar .logo img {
@@ -52,9 +55,14 @@ body {
     width: auto;
     border-radius: 12px;
     transition: var(--transition);
-    border: 3px solid var(--primary-red);
     padding: 4px;
     background: var(--white);
+}
+
+.navbar .logo:hover img,
+.navbar .logo img:hover {
+    transform: none !important;
+    animation: none !important;
 }
 
 
@@ -64,10 +72,13 @@ body {
     list-style: none;
     gap: 0.5rem;
     margin: 0;
-    padding: 0;
+    padding: 0.5rem;
     background: var(--light-gray);
     border-radius: 50px;
-    padding: 0.5rem;
+    flex: 1;
+    justify-content: center;
+    flex-wrap: wrap;
+    min-width: 0;
 }
 
 .navbar ul li {
@@ -119,10 +130,12 @@ body {
     display: flex;
     gap: 1rem;
     align-items: center;
+    flex-shrink: 0;
+    margin-left: auto;
 }
 
 .btn-login, .btn-donate {
-    padding: 0.8rem 2rem;
+    padding: 0.8rem 1.5rem;
     border-radius: 25px;
     text-decoration: none;
     font-weight: 700;
@@ -134,6 +147,8 @@ body {
     font-size: 0.9rem;
     position: relative;
     overflow: hidden;
+    white-space: nowrap;
+    flex-shrink: 0;
 }
 
 .btn-login {
@@ -269,16 +284,14 @@ body {
     transform: translate(-50%, -50%) scale(1);
 }
 
-/* Footer Styles - SMALL HEIGHT */
+/* Footer Styles */
 footer {
     background: linear-gradient(135deg, var(--dark-gray), #2d3748);
     color: var(--white);
-    text-align: center;
-    padding: 1.5rem 2rem; /* Reduced from 3rem */
-    margin-top: 3rem; /* Reduced from 4rem */
+    padding: 3rem 2rem 1.5rem;
+    margin-top: 3rem;
     position: relative;
     overflow: hidden;
-    min-height: auto; /* Remove fixed height */
 }
 
 footer::before {
@@ -287,41 +300,111 @@ footer::before {
     top: 0;
     left: 0;
     right: 0;
-    height: 3px; /* Slightly thinner */
+    height: 3px;
     background: linear-gradient(90deg, var(--primary-red), #28a745, var(--primary-red));
 }
 
-footer p {
-    margin: 0.4rem 0; /* Reduced spacing */
-    font-size: 0.9rem; /* Slightly smaller text */
-    opacity: 0.9;
+footer .container {
+    max-width: 1200px;
+    margin: 0 auto;
     position: relative;
     z-index: 2;
-    line-height: 1.4; /* Tighter line height */
 }
 
-footer p:first-child {
-    font-weight: 700;
-    font-size: 1rem; /* Smaller heading */
+.footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.footer-column h3 {
     color: var(--white);
-    margin-bottom: 0.5rem; /* Reduced margin */
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+    border-bottom: 2px solid var(--primary-red);
+    padding-bottom: 0.5rem;
 }
 
-/* Background pattern for footer - Smaller */
+.footer-column ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-column ul li {
+    margin-bottom: 0.8rem;
+    line-height: 1.6;
+}
+
+.footer-column ul li a {
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: none;
+    transition: var(--transition);
+    display: inline-block;
+}
+
+.footer-column ul li a:hover {
+    color: var(--primary-red);
+    transform: translateX(5px);
+}
+
+.footer-column ul li i {
+    margin-right: 0.5rem;
+    color: var(--primary-red);
+    width: 20px;
+}
+
+.social-links {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.social-links a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    color: var(--white);
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.social-links a:hover {
+    background: var(--primary-red);
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(230, 57, 70, 0.4);
+}
+
+.copyright {
+    text-align: center;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin-top: 2rem;
+}
+
+.copyright p {
+    margin: 0;
+    font-size: 0.9rem;
+    opacity: 0.9;
+    color: var(--white);
+}
+
+/* Background pattern for footer */
 footer::after {
     content: '💧';
     position: absolute;
-    font-size: 5rem; /* Much smaller */
+    font-size: 8rem;
     opacity: 0.03;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 1;
-}
-
-/* Remove br tag effect by reducing margins */
-footer br {
-    display: none;
 }
 
 /* Responsive Design */
@@ -350,17 +433,32 @@ footer br {
         width: 100%;
     }
     
+    .navbar-right {
+        margin-left: 0;
+        width: 100%;
+        justify-content: center;
+    }
+    
     .slides::after {
         font-size: 2.5rem;
     }
     
-    /* Smaller footer on tablet */
+    /* Footer responsive on tablet */
     footer {
-        padding: 1.2rem 1.5rem;
+        padding: 2rem 1.5rem 1rem;
+    }
+    
+    .footer-content {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
     }
 }
 
 @media (max-width: 768px) {
+    .navbar {
+        padding: 1rem;
+    }
+    
     .navbar ul li a {
         padding: 0.6rem 1rem;
         font-size: 0.85rem;
@@ -368,10 +466,12 @@ footer br {
     
     .navbar-right {
         gap: 0.8rem;
+        width: 100%;
+        justify-content: center;
     }
     
     .btn-login, .btn-donate {
-        padding: 0.7rem 1.5rem;
+        padding: 0.7rem 1.2rem;
         font-size: 0.85rem;
     }
     
@@ -388,19 +488,23 @@ footer br {
         bottom: 25%;
     }
     
-    /* Smaller footer on mobile */
+    /* Footer responsive on mobile */
     footer {
-        padding: 1rem 1.2rem;
+        padding: 2rem 1rem 1rem;
         margin-top: 2rem;
     }
     
-    footer p {
-        font-size: 0.85rem;
-        margin: 0.3rem 0;
+    .footer-content {
+        grid-template-columns: 1fr;
+        gap: 2rem;
     }
     
-    footer p:first-child {
-        font-size: 0.95rem;
+    .footer-column h3 {
+        font-size: 1.1rem;
+    }
+    
+    .copyright p {
+        font-size: 0.85rem;
     }
 }
 
@@ -418,24 +522,43 @@ footer br {
         font-size: 0.8rem;
     }
     
+    .navbar-right {
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    
+    .btn-login, .btn-donate {
+        padding: 0.6rem 1rem;
+        font-size: 0.8rem;
+    }
+    
     .hero {
         height: 60vh;
     }
     
-    /* Smallest footer for mobile */
+    /* Footer responsive for smallest mobile */
     footer {
-        padding: 0.8rem 1rem;
+        padding: 1.5rem 1rem 0.8rem;
         margin-top: 1.5rem;
     }
     
-    footer p {
-        font-size: 0.8rem;
-        margin: 0.2rem 0;
+    .footer-column h3 {
+        font-size: 1rem;
     }
     
-    footer p:first-child {
+    .footer-column ul li {
         font-size: 0.9rem;
-        margin-bottom: 0.3rem;
+        margin-bottom: 0.6rem;
+    }
+    
+    .copyright p {
+        font-size: 0.8rem;
+    }
+    
+    .social-links a {
+        width: 35px;
+        height: 35px;
     }
     
     .slides::after {
