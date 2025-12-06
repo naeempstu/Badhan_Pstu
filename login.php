@@ -17,9 +17,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $result = $stmt->get_result();
 
     if ($result->num_rows > 0) {
-        $_SESSION['username'] = $username;
-        header("Location: dashboard.php");
-        exit();
+        $user = $result->fetch_assoc();
+        
+        // Check if email is verified
+        if ($user['email_verified'] == 1) {
+            $_SESSION['username'] = $username;
+            header("Location: dashboard.php");
+            exit();
+        } else {
+            $error = "⚠️ আপনার ইমেইল এখনও যাচাই করা হয়নি। অনুগ্রহ করে আপনার ইমেইলে পাঠানো যাচাইকরণ লিংকে ক্লিক করুন।";
+        }
     } else {
         $error = "⚠️ ইউজারনেম বা পাসওয়ার্ড ভুল!";
     }

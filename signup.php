@@ -1,6 +1,7 @@
 <?php
 session_start();
 include 'db_connect.php';
+include 'config/mail_config.php';
 
 // Initialize variables
 $error = "";
@@ -21,6 +22,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $error = "পাসওয়ার্ড মিলেনি!";
     } elseif (strlen($password) < 6) {
         $error = "পাসওয়ার্ড অন্তত ৬ অক্ষরের হতে হবে!";
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $error = "সঠিক ইমেইল প্রদান করুন!";
     } else {
         // Check if username or email already exists
         $check_sql = "SELECT id FROM users WHERE username=? OR email=?";
@@ -32,20 +35,38 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($result->num_rows > 0) {
             $error = "ইউজারনেম বা ইমেইল ইতিমধ্যে ব্যবহৃত!";
         } else {
+            // Generate verification token and expiry
+            $verification_token = generateVerificationToken();
+            $token_expiry = date('Y-m-d H:i:s', strtotime('+24 hours'));
+            
             // Hash password
             $hashed_password = md5($password);
 
-            // Insert new user
-            $insert_sql = "INSERT INTO users (username, email, password, full_name, phone) VALUES (?, ?, ?, ?, ?)";
+            // Insert new user with unverified email
+            $insert_sql = "INSERT INTO users (username, email, email_verified, verification_token, token_expiry, password, full_name, phone) VALUES (?, ?, 0, ?, ?, ?, ?, ?)";
             $stmt = $conn->prepare($insert_sql);
-            $stmt->bind_param("sssss", $username, $email, $hashed_password, $full_name, $phone);
+            $stmt->bind_param("sssssss", $username, $email, $verification_token, $token_expiry, $hashed_password, $full_name, $phone);
 
             if ($stmt->execute()) {
-                $success = "✅ রেজিস্ট্রেশন সফল! এখন লগইন করুন।";
-                // Clear form fields
-                $_POST = array();
+                // Generate verification link
+                $verification_link = getVerificationLink($verification_token);
+
+                // Send verification email
+                if (sendVerificationEmail($email, $full_name, $verification_link)) {
+                    $success = "✅ রেজিস্ট্রেশন সফল! আপনার ইমেইলে একটি যাচাইকরণ লিংক পাঠানো হয়েছে। অনুগ্রহ করে আপনার ইনবক্স চেক করুন।";
+                    // Clear form fields
+                    $_POST = array();
+                } else {
+                    // Delete user if email sending fails
+                    $delete_sql = "DELETE FROM users WHERE username=?";
+                    $stmt = $conn->prepare($delete_sql);
+                    $stmt->bind_param("s", $username);
+                    $stmt->execute();
+                    
+                    $error = "ইমেইল পাঠাতে সমস্যা হয়েছে। আবার চেষ্টা করুন।";
+                }
             } else {
-                $error = "রেজিস্ট্রেশন失敗! আবার চেষ্টা করুন।";
+                $error = "রেজিস্ট্রেশন ব্যর্থ! আবার চেষ্টা করুন।";
             }
         }
     }
