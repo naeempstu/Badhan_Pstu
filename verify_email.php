@@ -51,7 +51,7 @@ if (isset($_GET['token'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ইমেইল যাচাইকরণ - বাঁধন প্রবিপ্রবি</title>
+    <title>ইমেইল যাচাইকরণ - বাঁধন পবিপ্রবি</title>
     <style>
         * {
             margin: 0;

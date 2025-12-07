@@ -1,18 +1,17 @@
-# Email Verification Setup Guide
+# Email Verification Setup Guide - Updated
 
-## Step 1: Install PHPMailer via Composer
+## ✅ Configuration: BADHAN PSTU UNIT
 
-Run this command in your project root directory:
+Your email verification system is now fully configured with:
+- **Email:** badhanpstu6@gmail.com
+- **App Name:** BADHAN PSTU UNIT
+- **App Password:** wrcv gclh mqhu qrsd
 
-```bash
-composer require phpmailer/phpmailer
-```
+---
 
-If you don't have Composer installed, download it from: https://getcomposer.org/
+## Step 1: Database Migration (IMPORTANT!)
 
-## Step 2: Run Database Migration
-
-Execute the SQL queries in your database to add the new columns:
+Execute these SQL queries in phpMyAdmin to add email verification columns:
 
 ```sql
 ALTER TABLE users ADD COLUMN email_verified TINYINT(1) DEFAULT 0 AFTER email;
@@ -22,57 +21,72 @@ ALTER TABLE users ADD COLUMN token_expiry DATETIME NULL AFTER verification_token
 CREATE INDEX idx_verification_token ON users(verification_token);
 ```
 
-Or import the `db_migration.sql` file through phpMyAdmin.
+### How to Run:
+1. Go to http://localhost/phpmyadmin
+2. Select database: `badhon_pstu`
+3. Click **SQL** tab
+4. Paste the SQL above
+5. Click **Go**
 
-## Step 3: File Structure
+## Step 2: Verify Configuration
 
-Your updated file structure should look like:
+Run this command in terminal:
+
+```bash
+cd C:\xampp\htdocs\badhon_pstu
+C:\xampp\php\php.exe test_email_config.php
+```
+
+Expected output:
+```
+✓ PHPMailer autoloader loaded successfully
+✓ Generated test token: 70c99218bacb661672c7...
+✓ Generated verification link: http://localhost/badhon_pstu/verify_email.php?token=...
+✓ PHPMailer instance created successfully
+✓ SMTP Configuration: Host=smtp.gmail.com, Port=587
+
+=== All tests completed ===
+Status: Ready for email verification
+```
+
+## Step 3: Test Email Verification
+
+### Register a test user:
+1. Go to http://localhost/badhon_pstu/signup.php
+2. Fill the form and submit
+3. Check email inbox for verification link
+4. Click the verification link to complete
+
+## Step 4: File Structure
 
 ```
 badhon_pstu/
 ├── config/
-│   ├── email_config.php (existing)
-│   └── mail_config.php (NEW - for PHPMailer)
-├── vendor/ (NEW - created by Composer)
-│   └── autoload.php
-├── signup.php (UPDATED)
-├── login.php (UPDATED)
-├── verify_email.php (NEW)
-├── db_migration.sql (NEW)
-├── db_connect.php (existing)
-└── ... other files
+│   └── mail_config.php ........... PHPMailer config (updated) ✓
+├── vendor/
+│   └── phpmailer/ ............... PHPMailer library ✓
+├── signup.php ................... Registration form ✓
+├── login.php .................... Login (checks email_verified) ✓
+├── verify_email.php ............. Email verification page ✓
+├── test_email_config.php ........ Configuration tester ✓
+├── db_migration.sql ............. Database changes ✓
+├── composer.json ................ Composer manifest ✓
+└── README.md .................... This file
 ```
-
-## Step 4: Gmail App Password
-
-The credentials are already configured in `config/mail_config.php`:
-- Email: omarsaeed3988@gmail.com
-- App Password: emqy yubv ucbj gqvg
-
-**Important**: Make sure to enable "Less secure apps" or use Gmail App Passwords feature.
-
-## Step 5: Test the Flow
-
-1. Go to signup page
-2. Fill in the registration form
-3. Check the email (omarsaeed3988@gmail.com will receive it)
-4. Click the verification link in the email
-5. User will be verified and can now login
 
 ## Features Implemented
 
-✅ Email verification token generation
+✅ Email verification token generation (256-bit secure random)
 ✅ 24-hour token expiry
-✅ Beautiful email template (Bilingual - Bengali/English)
+✅ Beautiful bilingual email template (Bengali/English)
 ✅ Verification status check in login
 ✅ Responsive verification page
 ✅ User-friendly error messages
 ✅ Automatic user deletion if email sending fails
 ✅ Index on verification_token for faster lookups
+✅ Prepared statements for SQL injection protection
 
-## Database Changes
-
-### Updated `users` table structure:
+## Updated Database Structure
 
 ```
 Column              | Type        | Purpose
@@ -80,31 +94,50 @@ Column              | Type        | Purpose
 id                 | int(11)     | Primary Key
 username           | varchar(100)| Username
 email              | varchar(150)| User Email
-email_verified     | tinyint(1)  | Verification Status (0/1)
-verification_token | varchar(255)| Unique verification token
-token_expiry       | datetime    | Token expiration time
+email_verified     | tinyint(1)  | Verification Status (0/1) ← NEW
+verification_token | varchar(255)| Unique token ← NEW
+token_expiry       | datetime    | Token expiry time ← NEW
 password           | varchar(255)| Password hash
 full_name          | varchar(150)| Full name
 phone              | varchar(30) | Phone number
 created_at         | timestamp   | Account creation time
 ```
 
+## Email Configuration
+
+- **Sender Email:** badhanpstu6@gmail.com
+- **Sender Name:** BADHAN PSTU UNIT
+- **SMTP Server:** smtp.gmail.com
+- **Port:** 587
+- **Encryption:** STARTTLS
+- **Email Subject:** BADHAN PSTU UNIT - ইমেইল যাচাইকরণ / Email Verification
+
 ## Troubleshooting
 
 If emails are not sending:
 
-1. Check if Composer installed PHPMailer correctly:
+1. **Verify database columns added:**
+   ```sql
+   DESCRIBE users;
+   ```
+   Look for: `email_verified`, `verification_token`, `token_expiry`
+
+2. **Test configuration:**
    ```bash
-   composer install
+   C:\xampp\php\php.exe test_email_config.php
    ```
 
-2. Verify Gmail credentials in `config/mail_config.php`
+3. **Check Gmail credentials:**
+   - Email: badhanpstu6@gmail.com
+   - Password: wrcv gclh mqhu qrsd (exact copy)
+   - Ensure 2FA is enabled on the account
 
-3. Check server error logs for detailed error messages
+4. **Check error logs:**
+   - XAMPP: `C:/xampp/apache/logs/error.log`
+   - PHP: Check php.ini error_log path
 
-4. Ensure your server allows outgoing SMTP connections (port 587)
-
-5. Check phpMyAdmin to confirm new columns were added to users table
+5. **Test SMTP connection:**
+   - Ensure server allows port 587 outgoing
 
 ## Security Notes
 

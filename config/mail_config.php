@@ -14,24 +14,24 @@ function sendVerificationEmail($to_email, $to_name, $verification_link) {
         $mail->isSMTP();
         $mail->Host = 'smtp.gmail.com';
         $mail->SMTPAuth = true;
-        $mail->Username = 'omarsaeed3988@gmail.com';
-        $mail->Password = 'emqy yubv ucbj gqvg'; // App-specific password
+        $mail->Username = 'badhanpstu6@gmail.com';
+        $mail->Password = 'wrcv gclh mqhu qrsd'; // App-specific password
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = 587;
 
         // Email headers
-        $mail->setFrom('omarsaeed3988@gmail.com', 'BADHAN_PSTU');
+        $mail->setFrom('badhanpstu6@gmail.com', 'BADHAN PSTU UNIT');
         $mail->addAddress($to_email, $to_name);
         $mail->isHTML(true);
         $mail->CharSet = 'UTF-8';
 
         // Email subject and body
-        $mail->Subject = 'BADHAN_PSTU - ইমেইল যাচাইকরণ / Email Verification';
+        $mail->Subject = 'BADHAN PSTU UNIT - ইমেইল যাচাইকরণ / Email Verification';
         
         $mail->Body = '
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background-color: #f5f5f5; padding: 20px; border-radius: 10px;">
             <div style="background-color: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
-                <h2 style="color: #e63946; text-align: center; margin-bottom: 20px;">BADHAN PSTU ইউনিট</h2>
+                <h2 style="color: #e63946; text-align: center; margin-bottom: 20px;">BADHAN PSTU UNIT</h2>
                 
                 <h3 style="color: #333; margin-bottom: 15px;">স্বাগতম ' . htmlspecialchars($to_name) . '!</h3>
                 
@@ -62,7 +62,7 @@ function sendVerificationEmail($to_email, $to_name, $verification_link) {
                 </p>
                 
                 <p style="color: #999; font-size: 12px; text-align: center; margin-top: 10px;">
-                    © 2025 BADHAN PSTU। All Rights Reserved
+                    © 2025 BADHAN PSTU UNIT। All Rights Reserved
                 </p>
             </div>
         </div>
@@ -76,7 +76,7 @@ function sendVerificationEmail($to_email, $to_name, $verification_link) {
         $verification_link
         
         এই লিংকটি ২৪ ঘণ্টার জন্য বৈধ।
-        © 2025 BADHAN PSTU
+        © 2025 BADHAN PSTU UNIT
         ";
 
         $mail->send();

@@ -78,7 +78,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>রেজিস্ট্রেশন - বাঁধন প্রবিপ্রবি</title>
+    <title>রেজিস্ট্রেশন - বাঁধন পবিপ্রবি</title>
     <link rel="stylesheet" href="static/css/signup.css">
   
 </head>

@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>বাঁধন প্রবিপ্রবি ইউনিট</title>
+<title>বাঁধন পবিপ্রবি ইউনিট</title>
 <link rel="icon" type="image/x-icon" href="picture/badhon.jpeg">
 <link rel="stylesheet" href="static/css/index.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -102,7 +102,7 @@
         <div class="news-card">
             <img src="Picture/news2.jpg" alt="News 2">
             <h3>বাঁধন-এর অগ্রযাত্রার ২৮ বছর পূর্তি উপলক্ষে</h3>
-            <p>বাঁধন প্রবিপ্রবি ইউনিট (বরিশাল জোন)-এর উদ্যোগে কেক কাটা হয়েছে।</p>
+            <p>বাঁধন পবিপ্রবি ইউনিট (বরিশাল জোন)-এর উদ্যোগে কেক কাটা হয়েছে।</p>
             <a href="#" class="read-more">Read More</a>
         </div>
 

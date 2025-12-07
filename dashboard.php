@@ -11,7 +11,7 @@ if (!isset($_SESSION['username'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ড্যাশবোর্ড - বাঁধন প্রবিপ্রবি</title>
+    <title>ড্যাশবোর্ড - বাঁধন পবিপ্রবি</title>
     <style>
         body {
             font-family: Arial, sans-serif;
