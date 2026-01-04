@@ -23,7 +23,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Check if email is verified
         if ($user['email_verified'] == 1) {
             $_SESSION['username'] = $username;
-            header("Location: dashboard.php");
+            $_SESSION['is_admin'] = (int)($user['is_admin'] ?? 0);
+            // Redirect admin users to admin dashboard
+            if ($_SESSION['is_admin']) {
+                header("Location: admin/index.php");
+            } else {
+                header("Location: dashboard.php");
+            }
             //print("success");
             exit();
         } else {

@@ -1,6 +1,5 @@
 
-
-/* static/css/about.css */
+/* static/css/activities.css */
 
 * {
     margin: 0;
@@ -16,7 +15,7 @@ body {
     line-height: 1.6;
 }
 
-/* Navbar Styles - Removed: All navbar styles are now in index.css */
+ All navbar styles are now in index.css */
 
 /* Main Content Styles */
 .main-content {
@@ -116,84 +115,6 @@ body {
     line-height: 1.8;
 }
 
-/* Team Section */
-.team-section {
-    background: linear-gradient(135deg, #a1c4fd, #c2e9fb);
-    padding: 3rem;
-    border-radius: 20px;
-    margin-bottom: 3rem;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-}
-
-.team-section h2 {
-    text-align: center;
-    color: #2d3436;
-    margin-bottom: 2rem;
-    font-size: 2.5rem;
-}
-
-.team-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2rem;
-}
-
-.team-member {
-    background: white;
-    padding: 2rem;
-    border-radius: 15px;
-    text-align: center;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
-}
-
-.team-member:hover {
-    transform: scale(1.05);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-}
-
-.team-member h4 {
-    color: #2d3436;
-    margin-bottom: 0.5rem;
-}
-
-.team-member p {
-    color: #636e72;
-}
-
-
-/* Footer Styles - Removed: All footer styles are now in index.css */
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    .hero-section h1 {
-        font-size: 2.5rem;
-    }
-    
-    .hero-section p {
-        font-size: 1.1rem;
-    }
-    
-    .main-content {
-        padding: 0 1rem;
-    }
-    
-}
-
-@media (max-width: 480px) {
-    .hero-section {
-        padding: 2rem 1rem;
-    }
-    
-    .hero-section h1 {
-        font-size: 2rem;
-    }
-    
-    .about-cards {
-        grid-template-columns: 1fr;
-    }
-    
-}
 
 
 
@@ -326,10 +247,10 @@ body {
     display: block;
     text-align: center;
     padding: 0.8rem;
-    background: #e80909;
-    color: var(--primary-red);
+    background: #e22626;
+    color: var(--white);
     font-weight: 600;
-    border-top: 1px solid #e51515;
+    border-top: 1px solid #ef2828;
     transition: var(--transition);
     text-decoration: none;
 }
@@ -341,24 +262,37 @@ body {
 
 .news-card:hover {
     transform: translateY(-8px);
-    box-shadow: 0 10px 25px rgba(216, 10, 10, 0.906);
+    box-shadow: 0 10px 25px rgba(212, 29, 29, 0.906);
 }
 
 .view-all {
     margin-top: 3rem;
+    text-align: center;
 }
 
+/* Support both the original .view-all-btn and the anchor if it uses class="activities" */
+.view-all a.activities,
 .view-all-btn {
-    background: var(--primary-red);
+    background: linear-gradient(135deg, var(--primary-red), var(--dark-red));
     color: var(--white);
     padding: 0.8rem 2rem;
     border-radius: 25px;
     text-decoration: none;
     font-weight: 600;
     transition: var(--transition);
+    display: inline-block;
+    box-shadow: 0 6px 18px rgba(230, 57, 70, 0.15);
 }
 
+.view-all a.activities:hover,
 .view-all-btn:hover {
     background: var(--dark-red);
     transform: scale(1.05);
+    box-shadow: 0 10px 28px rgba(208, 0, 0, 0.2);
+}
+
+.view-all a.activities:focus,
+.view-all-btn:focus {
+    outline: 3px solid rgba(230,57,70,0.15);
+    outline-offset: 4px;
 }

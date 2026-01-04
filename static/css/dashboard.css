@@ -296,6 +296,23 @@ body.dashboard-body {
     box-shadow: 0 4px 8px rgba(230, 57, 70, 0.3);
 }
 
+/* Delete / danger action button */
+.btn-delete {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: all 0.15s ease;
+}
+
+.btn-delete:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(220, 38, 38, 0.25);
+    background: linear-gradient(135deg, #dc2626, #ef4444);
+} 
+
 .btn-download-pdf {
     background: linear-gradient(135deg, #059669, #047857);
     color: #fff;

@@ -1,0 +1,167 @@
+<?php
+require_once '../includes/admin_auth.php';
+require_once '../db_connect.php';
+
+$uploadDir = __DIR__ . '/../Picture/news/';
+if (!is_dir($uploadDir)) { mkdir($uploadDir, 0755, true); }
+
+// Handle create/update
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $title = $_POST['title'] ?? '';
+    $content = $_POST['content'] ?? '';
+    $is_published = isset($_POST['is_published']) ? 1 : 0;
+    $id = isset($_POST['id']) ? intval($_POST['id']) : 0;
+
+    $imageName = null;
+    if (!empty($_FILES['image']['name'])) {
+        $tmp = $_FILES['image']['tmp_name'];
+        $orig = basename($_FILES['image']['name']);
+        $ext = pathinfo($orig, PATHINFO_EXTENSION);
+        $imageName = uniqid('news_') . '.' . $ext;
+        move_uploaded_file($tmp, $uploadDir . $imageName);
+    }
+
+    if ($id) {
+        if ($imageName) {
+            // Get old image
+            $stmt = $conn->prepare("SELECT image FROM news WHERE id = ? LIMIT 1");
+            $stmt->bind_param('i', $id);
+            $stmt->execute();
+            $r = $stmt->get_result()->fetch_assoc();
+            if ($r && $r['image']) {
+                @unlink($uploadDir . $r['image']);
+            }
+            $stmt = $conn->prepare("UPDATE news SET title=?, content=?, image=?, is_published=? WHERE id=?");
+            $stmt->bind_param('sssii', $title, $content, $imageName, $is_published, $id);
+            $stmt->execute();
+        } else {
+            $stmt = $conn->prepare("UPDATE news SET title=?, content=?, is_published=? WHERE id=?");
+            $stmt->bind_param('ssii', $title, $content, $is_published, $id);
+            $stmt->execute();
+        }
+    } else {
+        $stmt = $conn->prepare("INSERT INTO news (title, content, image, is_published) VALUES (?, ?, ?, ?)");
+        $stmt->bind_param('sssi', $title, $content, $imageName, $is_published);
+        $stmt->execute();
+    }
+    header('Location: news.php');
+    exit();
+}
+
+// Handle delete
+if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id'])) {
+    $id = intval($_GET['id']);
+    $stmt = $conn->prepare("SELECT image FROM news WHERE id = ? LIMIT 1");
+    $stmt->bind_param('i', $id);
+    $stmt->execute();
+    $r = $stmt->get_result()->fetch_assoc();
+    if ($r && $r['image']) { @unlink($uploadDir . $r['image']); }
+    $stmt = $conn->prepare("DELETE FROM news WHERE id = ?");
+    $stmt->bind_param('i', $id);
+    $stmt->execute();
+    header('Location: news.php');
+    exit();
+}
+
+// Load edit
+$editNews = null;
+if (isset($_GET['action']) && $_GET['action'] === 'edit' && isset($_GET['id'])) {
+    $id = intval($_GET['id']);
+    $stmt = $conn->prepare("SELECT * FROM news WHERE id = ? LIMIT 1");
+    $stmt->bind_param('i', $id);
+    $stmt->execute();
+    $res = $stmt->get_result();
+    $editNews = $res->num_rows ? $res->fetch_assoc() : null;
+}
+
+// Fetch all news
+$newsList = [];
+$res = $conn->query("SELECT * FROM news ORDER BY created_at DESC");
+if ($res) {
+    while ($row = $res->fetch_assoc()) {
+        $newsList[] = $row;
+    }
+}
+
+?>
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>নিউজ ব্যবস্থাপনা - Admin</title>
+    <link rel="stylesheet" href="../static/css/dashboard.css">
+</head>
+<body class="dashboard-body">
+<div class="dash-wrapper">
+    <aside class="dash-sidebar">
+        <h3>অ্যাডমিন প্যানেল</h3>
+        <ul>
+            <li><a href="index.php">ড্যাশবোর্ড</a></li>
+            <li><a href="notices.php">নোটিশ ব্যবস্থাপনা</a></li>
+            <li><a href="news.php" class="active">নিউজ ব্যবস্থাপনা</a></li>
+            <li><a href="gallery.php">গ্যালারি ব্যবস্থাপনা</a></li>
+            <li><a href="../logout.php">লগআউট</a></li>
+        </ul>
+    </aside>
+
+    <main class="dash-main">
+        <h1>নিউজ যোগ / সম্পাদনা</h1>
+        <form method="POST" enctype="multipart/form-data" style="margin-bottom:20px;">
+            <input type="hidden" name="id" value="<?php echo htmlspecialchars($editNews['id'] ?? ''); ?>">
+            <div>
+                <label>শিরোনাম</label><br>
+                <input type="text" name="title" value="<?php echo htmlspecialchars($editNews['title'] ?? ''); ?>" required style="width:100%; padding:8px;">
+            </div>
+            <div style="margin-top:8px;">
+                <label>বিবরণ</label><br>
+                <textarea name="content" rows="6" style="width:100%; padding:8px;" required><?php echo htmlspecialchars($editNews['content'] ?? ''); ?></textarea>
+            </div>
+            <div style="margin-top:8px;">
+                <label>চিত্র (ঐচ্ছিক)</label><br>
+                <?php if (!empty($editNews['image'])): ?>
+                    <div style="margin-bottom:8px;"><img src="../Picture/news/<?php echo htmlspecialchars($editNews['image']); ?>" style="max-width:200px;"></div>
+                <?php endif; ?>
+                <input type="file" name="image" accept="image/*">
+            </div>
+            <div style="margin-top:8px;">
+                <label><input type="checkbox" name="is_published" <?php echo (!empty($editNews) && $editNews['is_published']) ? 'checked' : ''; ?>> প্রকাশিত</label>
+            </div>
+            <div style="margin-top:10px;">
+                <button class="btn" type="submit">সেভ করুন</button>
+                <?php if ($editNews): ?>
+                    <a class="btn" href="news.php" style="background:#6b7280;">বাতিল</a>
+                <?php endif; ?>
+            </div>
+        </form>
+
+        <h2>মোট নিউজ</h2>
+        <table style="width:100%; border-collapse:collapse;">
+            <thead>
+                <tr style="background:#fee2e2;">
+                    <th style="padding:10px; text-align:left;">ID</th>
+                    <th style="padding:10px; text-align:left;">শিরোনাম</th>
+                    <th style="padding:10px; text-align:left;">চিত্র</th>
+                    <th style="padding:10px; text-align:left;">প্রকাশিত</th>
+                    <th style="padding:10px; text-align:left;">অ্যাকশন</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach($newsList as $n): ?>
+                <tr>
+                    <td style="padding:10px; border-top:1px solid #f1f5f9;"><?php echo $n['id']; ?></td>
+                    <td style="padding:10px; border-top:1px solid #f1f5f9;"><?php echo htmlspecialchars($n['title']); ?></td>
+                    <td style="padding:10px; border-top:1px solid #f1f5f9;"><?php if ($n['image']): ?><img src="../Picture/news/<?php echo htmlspecialchars($n['image']); ?>" style="max-width:120px;"><?php endif;?></td>
+                    <td style="padding:10px; border-top:1px solid #f1f5f9;"><?php echo $n['is_published'] ? 'হ্যাঁ' : 'না'; ?></td>
+                    <td style="padding:10px; border-top:1px solid #f1f5f9;">
+                        <a class="btn-action btn-edit" href="news.php?action=edit&id=<?php echo $n['id']; ?>">সম্পাদনা</a>
+                        <a class="btn-action btn-delete" href="news.php?action=delete&id=<?php echo $n['id']; ?>" onclick="return confirm('আপনি কি নিশ্চিতভাবে মুছে ফেলতে চান?');">মুছে ফেলুন</a>
+                    </td>
+                </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </main>
+</div>
+</body>
+</html>

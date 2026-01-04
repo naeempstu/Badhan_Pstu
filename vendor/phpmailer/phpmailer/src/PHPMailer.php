@@ -1234,22 +1234,7 @@ class PHPMailer
         return false;
     }
 
-    /**
-     * Parse and validate a string containing one or more RFC822-style comma-separated email addresses
-     * of the form "display name <address>" into an array of name/address pairs.
-     * Uses the imap_rfc822_parse_adrlist function if the IMAP extension is available.
-     * Note that quotes in the name part are removed.
-     *
-     * @see https://www.andrew.cmu.edu/user/agreen1/testing/mrbs/web/Mail/RFC822.php A more careful implementation
-     *
-     * @param string $addrstr The address list string
-     * @param null   $useimap Unused. Argument has been deprecated in PHPMailer 6.11.0.
-     *                        Previously this argument determined whether to use
-     *                        the IMAP extension to parse the list and accepted a boolean value.
-     * @param string $charset The charset to use when decoding the address list string.
-     *
-     * @return array
-     */
+   
     public static function parseAddresses($addrstr, $useimap = null, $charset = self::CHARSET_ISO88591)
     {
         if ($useimap !== null) {

@@ -185,6 +185,9 @@ while ($row = $br_result->fetch_assoc()) {
             <?php if ($profile_id): ?>
             <li><a href="profile_versions.php?up=<?php echo $profile_id; ?>">প্রোফাইল সংস্করণ</a></li>
             <?php endif; ?>
+            <?php if (!empty($_SESSION['is_admin'])): ?>
+            <li><a href="admin/index.php">অ্যাডমিন প্যানেল</a></li>
+            <?php endif; ?>
             <li><a href="logout.php">লগআউট</a></li>
         </ul>
     </aside>
@@ -262,7 +265,7 @@ while ($row = $br_result->fetch_assoc()) {
 </body>
 </html>
 
-<!-- Blood Requests Section (outside wrapper for full width option or inside for consistency) -->
+<!-- Blood Requests Section -->
 <div class="dash-wrapper">
     <div class="blood-requests-section" style="grid-column: 1 / -1;">
         <h2>🩸 রক্তের চাহিদা</h2>

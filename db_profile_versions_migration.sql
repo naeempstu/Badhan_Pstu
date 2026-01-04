@@ -24,4 +24,4 @@ CREATE TABLE IF NOT EXISTS `user_profile_versions` (
   KEY `idx_user` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Note: This is a new table to store profile snapshots for edit/version history.
+

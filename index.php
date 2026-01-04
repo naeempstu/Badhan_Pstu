@@ -52,7 +52,9 @@
             <a href="login.php" class="btn-login">লগইন</a>
         <?php endif; ?>
     </div>
+    
 </nav>
+
 
 <!-- ================= SLIDER / HERO ================= -->
 <section class="hero">
@@ -116,8 +118,8 @@
     </div>
 
     <div class="view-all">
-        <a href="news.php" class="view-all-btn">View All</a>
-    </div>
+        <a href="activities.php" class="activities">View All</a>
+    </div> 
 </section>
 
 <!-- ================= FOOTER ================= -->
@@ -181,6 +183,8 @@ function currentSlide(n) {
     slideIndex = n - 1;
     showSlides();
 }
+
+
 </script>
 </body>
 </html>

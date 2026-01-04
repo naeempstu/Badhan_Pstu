@@ -189,15 +189,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     <option value="Other" <?php echo (isset($profile['gender']) && $profile['gender']=='Other')? 'selected':'';?>>Other</option>
                                 </select>
                             </div>
-
+                        
                             <div class="form-group">
                                 <label>রক্তের গ্রুপ</label>
-                                <input type="text" name="blood_group" value="<?php echo htmlspecialchars($profile['blood_group'] ?? ''); ?>">
+                                 <select name="blood_group">
+                                 <option value="">-- নির্বাচন করুন --</option>
+                                    <option value="A+" <?php echo (isset($profile['blood_group']) && $profile['blood_group']=='A+')? 'selected':'';?>>A+</option>
+                                    <option value="A-" <?php echo (isset($profile['blood_group']) && $profile['blood_group']=='A-')? 'selected':'';?>>A-</option>
+                                    <option value="B+" <?php echo (isset($profile['blood_group']) && $profile['blood_group']=='B+')? 'selected':'';?>>B+</option>
+                                    <option value="B-" <?php echo (isset($profile['blood_group']) && $profile['blood_group']=='B-')? 'selected':'';?>>B-</option>
+                                    <option value="AB+" <?php echo (isset($profile['blood_group']) && $profile['blood_group']=='AB+')? 'selected':'';?>>AB+</option>
+                                    <option value="AB-" <?php echo (isset($profile['blood_group']) && $profile['blood_group']=='AB-')? 'selected':'';?>>AB-</option>
+                                    <option value="O+" <?php echo (isset($profile['blood_group']) && $profile['blood_group']=='O+')? 'selected':'';?>>O+</option>
+                                    <option value="O-" <?php echo (isset($profile['blood_group']) && $profile['blood_group']=='O-')? 'selected':'';?>>O-</option>
+                                    </select>
                             </div>
-
+                        
                             <div class="form-group">
                                 <label>ফোন</label>
-                                <input type="text" name="phone" value="<?php echo htmlspecialchars($profile['phone'] ?? $user['email']); ?>">
+                                 <input type="text" name="phone" value="<?php echo htmlspecialchars($profile['phone'] ?? ''); ?>">
                             </div>
 
                             <div class="form-group">

@@ -1,5 +1,4 @@
--- Create user_profiles table to store personal details per user
--- Run this in phpMyAdmin or via MySQL client
+
 
 CREATE TABLE IF NOT EXISTS `user_profiles` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,

@@ -95,7 +95,10 @@ form button:hover {
             <a href="login.php" class="btn-login">লগইন</a>
         <?php endif; ?>
     </div>
+    
 </nav>
+
+
 
 <div class="main-content">
     <section class="hero-section">
@@ -201,6 +204,9 @@ form button:hover {
         </div>
     </div>
 </footer>
+
+
+
 
 </body>
 </html>

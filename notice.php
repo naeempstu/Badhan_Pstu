@@ -53,6 +53,7 @@
             <a href="login.php" class="btn-login">লগইন</a>
         <?php endif; ?>
     </div>
+    
 </nav>
 
 <div class="main-content">
@@ -63,11 +64,30 @@
     </section>
    
  <div class="about-cards">
+    <?php
+    include 'db_connect.php';
+    $notices = [];
+    $res = $conn->query("SELECT * FROM notices WHERE is_published=1 ORDER BY created_at DESC");
+    if ($res) {
+        while ($row = $res->fetch_assoc()) {
+            $notices[] = $row;
+        }
+    }
+
+    if (empty($notices)): ?>
         <div class="card">
-        <p>কোন নোটিশ পাওয়া যায়নি
-       এখনও কোন নোটিশ প্রকাশ করা হয়নি। দয়া করে পরে আবার চেষ্টা করুন।</p>
+            <p>কোন নোটিশ পাওয়া যায়নি। এখনও কোন নোটিশ প্রকাশ করা হয়নি। দয়া করে পরে আবার চেষ্টা করুন।</p>
         </div>
-        
+    <?php else:
+        foreach ($notices as $n): ?>
+            <div class="card">
+                <h3><?php echo htmlspecialchars($n['title']); ?></h3>
+                <small><?php echo htmlspecialchars($n['created_at']); ?></small>
+                <p><?php echo nl2br(htmlspecialchars($n['content'])); ?></p>
+            </div>
+        <?php endforeach; ?>
+    <?php endif; ?>
+    
     </div>
     </div>
     
@@ -110,6 +130,8 @@
         </div>
     </div>
 </footer>
+
+
 
 </body>
 </html>

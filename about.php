@@ -53,7 +53,10 @@
             <a href="login.php" class="btn-login">লগইন</a>
         <?php endif; ?>
     </div>
+   
 </nav>
+
+
 
 <div class="main-content">
     <section class="hero-section">
@@ -100,17 +103,17 @@
     <section class="team-section">
         <h2>আমাদের টিম</h2>
         <div class="team-grid">
+             <div class="team-member">
+                <h4>জোনাল প্রতিনিধি</h4>
+                <p>মো: আরিফুল ইসলাম রিয়াদ</p>
+            </div>
             <div class="team-member">
                 <h4>সভাপতি</h4>
-                <p>মোহাইমিন আজিম তাসিন</p>
+                <p>মো: নজরুল ইসলাম</p>
             </div>
             <div class="team-member">
                 <h4>সাধারণ সম্পাদক</h4>
-                <p>মারুফ হাসান</p>
-            </div>
-            <div class="team-member">
-                <h4>জোনাল প্রতিনিধি</h4>
-                <p>মেহেদী হাসান ইমন</p>
+                <p>মো: নাইমুল হক তালুকদার</p>
             </div>
             <div class="team-member">
                 <h4>ডিজাইনার ও ডেভেলপার</h4>
@@ -162,6 +165,8 @@
         </div>
     </div>
 </footer>
+
+
 
 </body>
 </html>
