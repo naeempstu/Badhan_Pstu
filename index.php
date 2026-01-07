@@ -40,40 +40,26 @@
 <section class="latest-news">
     <h2><span>Latest</span> News</h2>
 
+    <?php
+    include 'db_connect.php';
+    $news_items = [];
+    $res = $conn->query("SELECT * FROM news WHERE is_published=1 ORDER BY created_at DESC LIMIT 4");
+    if ($res) {
+        while ($row = $res->fetch_assoc()) { $news_items[] = $row; }
+    }
+    ?>
+
     <div class="news-container">
-
-    <!-- Card 1 -->
+    <?php if (empty($news_items)): ?>
+        <div class="card"><p>কোন খবর পাওয়া যায়নি। পরে আবার চেক করুন।</p></div>
+    <?php else: foreach ($news_items as $n): ?>
         <div class="news-card">
-            <img src="Picture/news4.jpg" alt="News 4">
-            <h3>বাঁধন, পটুয়াখালী বিজ্ঞান প্রযুক্তি বিশ্ববিদ্যালয় ইউনিট (বরিশাল জোন) কার্যকরী পরিষদ-২৫ এর ৮ম কার্যকরী সভা</h3>
-            <p>"একের রক্ত অন্যের জীবন, রক্তই হোক আত্মার বাঁধন" এই স্লোগানকে সামনে রেখে সংগঠনকে গতিশীল করার লক্ষ্যে বাঁধন, পটুয়াখালী বিজ্ঞান প্রযুক্তি বিশ্ববিদ্যালয় ইউনিট (বরিশাল জোন) কার্যকরী পরিষদ-২৫  এর ৮ম কার্যকরী সভার আয়োজন করা হয়। </p>
-
-            <a href="#" class="read-more">Read More</a>
+            <img src="<?php echo !empty($n['image']) ? 'Picture/news/'.htmlspecialchars($n['image']) : 'Picture/news1.jpg'; ?>" alt="<?php echo htmlspecialchars($n['title']); ?>">
+            <h3><?php echo htmlspecialchars($n['title']); ?></h3>
+            <p><?php echo nl2br(htmlspecialchars(strlen($n['content']) > 240 ? substr($n['content'],0,240) . '...' : $n['content'])); ?></p>
+            <a href="news_view.php?id=<?php echo $n['id']; ?>" class="read-more">Read More</a>
         </div>
-
-        <!-- Card 2 -->
-        <div class="news-card">
-            <img src="Picture/news1.jpg" alt="News 1">
-            <h3>বাঁধন, পটুয়াখালী বিজ্ঞান ও প্রযুক্তি বিশ্ববিদ্যালয় ইউনিট (বরিশাল জোন)-এর আয়োজনে বিনামূল্যে ব্লাড গ্রুপ নির্ণয়</h3>
-            <p>বাঁধন, পটুয়াখালী বিজ্ঞান ও প্রযুক্তি বিশ্ববিদ্যালয় ইউনিট-এর আয়োজনে বিশ্ববিদ্যালয়ের ছাত্র-ছাত্রী, শিক্ষক, কর্মকর্তা-কর্মচারী এবং বিশ্ববিদ্যালয়ের আশেপাশের অনেকেরই বিনামূল্যে ব্লাড গ্রুপ নির্ণয় করা হয়।</p>
-            <a href="#" class="read-more">Read More</a>
-        </div>
-
-        <!-- Card 3 -->
-        <div class="news-card">
-            <img src="Picture/news2.jpg" alt="News 2">
-            <h3>বাঁধন-এর অগ্রযাত্রার ২৮ বছর পূর্তি উপলক্ষে</h3>
-            <p>বাঁধন পবিপ্রবি ইউনিট (বরিশাল জোন)-এর উদ্যোগে কেক কাটা হয়েছে।</p>
-            <a href="#" class="read-more">Read More</a>
-        </div>
-
-        <!-- Card 4 -->
-        <div class="news-card">
-            <img src="Picture/news3.jpg" alt="News 3">
-            <h3>বাঁধন-এর রক্তজয়ন্তী উপলক্ষে আনন্দ র‍্যালি</h3>
-            <p>বাঁধন-এর রক্তজয়ন্তী উপলক্ষে বিভিন্ন কর্মসূচী অনুষ্ঠিত হয় এবং ক্যাম্পাসে র‍্যালি অনুষ্ঠিত হয়।</p>
-            <a href="#" class="read-more">Read More</a>
-        </div>        
+    <?php endforeach; endif; ?>
     </div>
 
     <div class="view-all">

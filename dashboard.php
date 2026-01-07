@@ -38,6 +38,35 @@ $blood_requests = [];
 while ($row = $br_result->fetch_assoc()) {
     $blood_requests[] = $row;
 }
+
+// Handle admin status change requests
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['change_status'])) {
+    // Only admins may change status
+    if (empty($_SESSION['is_admin'])) {
+        $_SESSION['status_msg'] = 'অনুমতি নেই: আপনাকে অ্যাডমিন হতে হবে।';
+        header('Location: dashboard.php');
+        exit();
+    }
+
+    $req_id = intval($_POST['request_id'] ?? 0);
+    $new_status = $_POST['new_status'] ?? '';
+    $allowed = ['pending','approved','completed'];
+
+    if ($req_id > 0 && in_array($new_status, $allowed, true)) {
+        $up = $conn->prepare("UPDATE blood_requests SET status = ? WHERE id = ? LIMIT 1");
+        $up->bind_param('si', $new_status, $req_id);
+        if ($up->execute()) {
+            $_SESSION['status_msg'] = 'স্ট্যাটাস সফলভাবে পরিবর্তিত হয়েছে।';
+        } else {
+            $_SESSION['status_msg'] = 'স্ট্যাটাস পরিবর্তন করা যায়নি।';
+        }
+    } else {
+        $_SESSION['status_msg'] = 'অবৈধ অনুরোধ।';
+    }
+
+    header('Location: dashboard.php');
+    exit();
+}
 ?>
 
 <!DOCTYPE html>
@@ -156,6 +185,29 @@ while ($row = $br_result->fetch_assoc()) {
             background: #dbeafe;
             color: #1e40af;
         }
+        .status-actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .status-form { margin: 0; }
+        .status-btn {
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+            transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+        }
+        .status-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 14px rgba(0,0,0,0.12); opacity: 0.98; }
+        .status-btn:focus { outline: 3px solid rgba(59,130,246,0.15); outline-offset: 2px; }
+        .status-btn.status-approved { background: #16a34a; }
+        .status-btn.status-completed { background: #2563eb; }
+        .status-btn.status-pending { background: #f59e0b; color: #000; }
         .blood-requests-empty {
             text-align: center;
             padding: 40px 20px;
@@ -197,6 +249,12 @@ while ($row = $br_result->fetch_assoc()) {
             <h1>স্বাগতম, <?php echo htmlspecialchars($user['full_name'] ?? $username); ?>!</h1>
             <p>ইমেইল: <?php echo htmlspecialchars($user['email'] ?? ''); ?></p>
         </div>
+
+        <?php if (!empty($_SESSION['status_msg'])): ?>
+            <div class="status-flash" style="margin:12px 0;padding:12px;border-radius:8px;background:#d1fae5;color:#065f46;">
+                <?php echo htmlspecialchars($_SESSION['status_msg']); unset($_SESSION['status_msg']); ?>
+            </div>
+        <?php endif; ?>
 
         <h2>দ্রুত অ্যাক্সেস</h2>
         
@@ -280,6 +338,9 @@ while ($row = $br_result->fetch_assoc()) {
                         <th>হাসপাতাল</th>
                         <th>ফোন</th>
                         <th>স্ট্যাটাস</th>
+                        <?php if (!empty($_SESSION['is_admin'])): ?>
+                        <th>ক্রিয়া</th>
+                        <?php endif; ?>
                         <th>অনুরোধ তারিখ</th>
                     </tr>
                 </thead>
@@ -306,6 +367,30 @@ while ($row = $br_result->fetch_assoc()) {
                             ?>
                             <span class="status-badge <?php echo $class; ?>"><?php echo $label; ?></span>
                         </td>
+                        <?php if (!empty($_SESSION['is_admin'])): ?>
+                        <td>
+                                <div class="status-actions" aria-label="Status actions">
+                                    <form method="post" class="status-form">
+                                        <input type="hidden" name="change_status" value="1">
+                                        <input type="hidden" name="request_id" value="<?php echo htmlspecialchars($req['id']); ?>">
+                                        <input type="hidden" name="new_status" value="approved">
+                                        <button type="submit" class="status-btn status-approved" title="অনুমোদন">✓ অনুমোদন</button>
+                                    </form>
+                                    <form method="post" class="status-form">
+                                        <input type="hidden" name="change_status" value="1">
+                                        <input type="hidden" name="request_id" value="<?php echo htmlspecialchars($req['id']); ?>">
+                                        <input type="hidden" name="new_status" value="completed">
+                                        <button type="submit" class="status-btn status-completed" title="সম্পন্ন">✔ সম্পন্ন</button>
+                                    </form>
+                                    <form method="post" class="status-form">
+                                        <input type="hidden" name="change_status" value="1">
+                                        <input type="hidden" name="request_id" value="<?php echo htmlspecialchars($req['id']); ?>">
+                                        <input type="hidden" name="new_status" value="pending">
+                                        <button type="submit" class="status-btn status-pending" title="পেন্ডিং">⟳ পেন্ডিং</button>
+                                    </form>
+                                </div>
+                        </td>
+                        <?php endif; ?>
                         <td><?php echo htmlspecialchars($req['request_date']); ?></td>
                     </tr>
                     <?php endforeach; ?>
