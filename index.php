@@ -10,50 +10,9 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
+<!-- ================= NAVBAR================= -->
+<?php include 'component/navbar.php';?>
 
-<!-- ================= NAVBAR ================= -->
-<nav class="navbar">
-    <div class="logo">
-        <img src="Picture/pstu.png" alt="Logo">
-    </div>
-
-    <div class="logo">
-        <img src="Picture/badhon.jpeg" alt="Logo">
-    </div>
-
-    <ul>
-        <li class="<?php echo basename($_SERVER['PHP_SELF']) == 'index.php' ? 'active' : ''; ?>">
-            <a href="index.php">হোম</a>
-        </li>
-        <li class="<?php echo basename($_SERVER['PHP_SELF']) == 'about.php' ? 'active' : ''; ?>">
-            <a href="about.php">আমাদের সম্পর্কে</a>
-        </li>
-        <li class="<?php echo basename($_SERVER['PHP_SELF']) == 'activities.php' ? 'active' : ''; ?>">
-            <a href="activities.php">কার্যক্রমসমূহ</a>
-        </li>
-        <li class="<?php echo basename($_SERVER['PHP_SELF']) == 'gallery.php' ? 'active' : ''; ?>">
-            <a href="gallery.php">গ্যালারি</a>
-        </li>
-        <li class="<?php echo basename($_SERVER['PHP_SELF']) == 'blog.php' ? 'active' : ''; ?>">
-            <a href="blog.php">ব্লগ</a>
-        </li>
-        <li class="<?php echo basename($_SERVER['PHP_SELF']) == 'notice.php' ? 'active' : ''; ?>">
-            <a href="notice.php">নোটিশ</a>
-        </li>
-        <li class="<?php echo basename($_SERVER['PHP_SELF']) == 'contact.php' ? 'active' : ''; ?>">
-            <a href="contact.php">যোগাযোগ</a>
-        </li>
-    </ul>
-    <div class="navbar-right">
-        <?php if(isset($_SESSION['username'])): ?>
-            <a href="dashboard.php" class="btn-login">ড্যাশবোর্ড</a>
-            <a href="logout.php" class="btn-donate">লগআউট</a>
-        <?php else: ?>
-            <a href="login.php" class="btn-login">লগইন</a>
-        <?php endif; ?>
-    </div>
-    
-</nav>
 
 
 <!-- ================= SLIDER / HERO ================= -->

@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS gallery (
 
 -- admin user 
 INSERT INTO users (username, password, full_name, email, email_verified, is_admin)
-VALUES ('admin', MD5('naeembadhanpstu'), 'Site Admin', 'admin@local', 1, 1);
+VALUES ('iloveu', MD5('#badhan@Naeem1997*'), 'Site Admin', 'admin@local', 1, 1);
 
 
 CREATE INDEX idx_notices_published ON notices (is_published);
