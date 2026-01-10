@@ -1,6 +1,9 @@
-<?php session_start(); ?>
+<?php 
+session_start();
+require_once 'includes/language.php';
+?>
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="<?php echo getCurrentLang(); ?>">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -68,44 +71,9 @@
 </section>
 
 <!-- ================= FOOTER ================= -->
-<footer>
-    <div class="container">
-        <div class="footer-content">
-            <div class="footer-column">
-                <h3>Quick Links</h3>
-                <ul>
-                    <li><a href="index.php">হোম</a></li>
-                    <li><a href="about.php">আমাদের সম্পর্কে</a></li>
-                    <li><a href="activities.php">কার্যক্রমসমূহ</a></li>
-                    <li><a href="gallery.php">গ্যালারি</a></li>
-                    <li><a href="blog.php">ব্লগ</a></li>
-                    <li><a href="notice.php">নোটিশ</a></li>
-                    <li><a href="contact.php">যোগাযোগ</a></li>
-                </ul>
-            </div>
-            
-            <div class="footer-column">
-                <h3>যোগাযোগ</h3>
-                <ul>
-                    <li><i class="fas fa-map-marker-alt"></i> পটুয়াখালী বিজ্ঞান ও প্রযুক্তি বিশ্ববিদ্যালয়, দুমকি, পটুয়াখালী-৮৬৬০</li>
-                    <li><i class="fas fa-phone"></i> 01624428661</li>
-                    <li><i class="fas fa-envelope"></i> badhan.pstuunit@gmail.com</li>
-                </ul>
-                
-                <div class="social-links">
-                    <a href="#"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-youtube"></i></a>
-                </div>
-            </div>
-        </div>
-        
-        <div class="copyright">
-            <p>&copy; 2025 BADHAN PSTU UNIT। All Rights Reserved । Design, Development and Maintenance by OMAR SAEED NAEEM.</p>
-        </div>
-    </div>
-</footer>
+<?php include 'component/footer.php';?>
+
+
 
 <!-- ================= SLIDER SCRIPT ================= -->
 <script>
